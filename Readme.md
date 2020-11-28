@@ -1,0 +1,1 @@
+[![Build status](https://ci.appveyor.com/api/projects/status/8jsakqha0so8463q?svg=true)](https://ci.appveyor.com/project/Nemeziz1/auto4-selenide)
