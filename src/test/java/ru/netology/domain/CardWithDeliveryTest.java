@@ -27,18 +27,16 @@ public class CardWithDeliveryTest {
     void shouldSubmitRequest() {
         SelenideElement request = $(".form");
         request.$("[class='input__inner'] [type='text']").setValue("Москва");
-        Calendar dateForRequest = Calendar.getInstance();
-        dateForRequest.add(Calendar.DATE, 5);
-        SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
-        String dateInForm = dateFormat.format(dateForRequest.getTime());
-        request.$("[class='input__box'] [placeholder='Дата встречи']").doubleClick();
-        request.$("[class='input__box'] [placeholder='Дата встречи']").sendKeys(Keys.DELETE);
+        LocalDate date = LocalDate.now().plusDays(5);
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
+        String dateInForm = date.format(dateTimeFormatter);
+        request.$("[class='input__box'] [placeholder='Дата встречи']").doubleClick().sendKeys(Keys.DELETE);
         request.$("[class='input__box'] [placeholder='Дата встречи']").setValue(dateInForm);
-        request.$$("[class='input__inner'] [type='text']").last().setValue("Корякин Андрей");
+        request.$("[data-test-id=name] input.input__control").setValue("Корякин Андрей");
         request.$("[class='input__box'] [name='phone']").setValue("+79999999999");
         request.$("[data-test-id=agreement]").click();
         request.$("[class='button__content'] [class='button__text']").click();
-        $(byText("Успешно!")).waitUntil(Condition.visible, 15000);
+        $(byText(dateInForm)).waitUntil(Condition.visible, 15000);
     }
 
     @Test
@@ -47,14 +45,9 @@ public class CardWithDeliveryTest {
         request.$("[class='input__inner'] [type='text']").setValue("Сан");
         $(byText("Санкт-Петербург")).click();
         request.$("[class='icon-button__text'] [class='icon icon_size_m icon_name_calendar icon_theme_alfa-on-white']").click();
-        Calendar dateForRequest = Calendar.getInstance();
-        dateForRequest.add(Calendar.DATE, 7);
-        SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
-        String dateInForm = dateFormat.format(dateForRequest.getTime());
-        request.$("[class='input__box'] [placeholder='Дата встречи']").doubleClick();
-        request.$("[class='input__box'] [placeholder='Дата встречи']").sendKeys(Keys.DELETE);
-        request.$("[class='input__box'] [placeholder='Дата встречи']").setValue(dateInForm);
-        request.$$("[class='input__inner'] [type='text']").last().setValue("Корякин Андрей");
+        request.$("[class='input__box'] [placeholder='Дата встречи']").click();
+        request.$("[class='calendar__row'] [data-day='1607202000000']").click();
+        request.$("[data-test-id=name] input.input__control").setValue("Корякин Андрей");
         request.$("[class='input__box'] [name='phone']").setValue("+79999999999");
         request.$("[data-test-id=agreement]").click();
         request.$("[class='button__content'] [class='button__text']").click();
